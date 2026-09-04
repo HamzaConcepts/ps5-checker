@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  ps5-stock-bot:
+    build: .
+    container_name: ps5-stock-bot
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./stock_state.json:/app/stock_state.json
