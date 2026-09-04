@@ -1,0 +1,37 @@
+name: PS5 Stock Monitor
+
+on:
+  schedule:
+    # Runs every 5 minutes (standard GitHub cron schedule)
+    - cron: '*/5 * * * *'
+  workflow_dispatch: # Allows manual trigger anytime from GitHub UI
+
+jobs:
+  check-stock:
+    name: Check PlayStation Direct Stock
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Stock Check
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          DISCORD_NOTIFY_ROLE_ID: ${{ secrets.DISCORD_NOTIFY_ROLE_ID || 'everyone' }}
+          DISCORD_BOT_USERNAME: ${{ secrets.DISCORD_BOT_USERNAME || 'PS5 Stock Alert Bot' }}
+          PRODUCT_CODE: ${{ secrets.PRODUCT_CODE || '1000050928' }}
+          TARGET_URL: ${{ secrets.TARGET_URL || 'https://direct.playstation.com/en-us/buy-consoles/playstation5-pro-console-2-tb' }}
+        run: |
+          python main.py --once
