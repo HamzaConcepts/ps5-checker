@@ -130,3 +130,4 @@ docker compose up -d --build
 - **Dual-Engine Checking**: Primary check uses PlayStation Direct's internal Commerce REST API for sub-second responses; automatically falls back to full HTML parsing if the API format ever changes.
 - **Stealth Requesting**: Uses randomized modern User-Agents, realistic browser headers, and standard browser CORS signatures.
 - **State Management**: Persists status in `stock_state.json` to prevent repeated notification spam.
+# ps5-checker
